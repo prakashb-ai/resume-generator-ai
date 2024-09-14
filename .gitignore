@@ -1,0 +1,41 @@
+# Python-related ignores
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pyd
+*.db
+*.sqlite3
+
+# Virtual environment
+venv/
+.env/
+*.env
+
+# env files
+.env
+
+# Dependency directories
+pip-log.txt
+pip-delete-this-directory.txt
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# IDE-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MacOS
+.DS_Store
+
+# Deployment
+*.heroku
+*.vercel
+
+# Logs
+*.log

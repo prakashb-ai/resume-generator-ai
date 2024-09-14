@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linkedin AI Resume Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 5%;
+            margin-bottom: 20px;
+        }
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="file"],
+        select,
+        button {
+            display: block;
+            width: calc(100% - 22px);
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #f3600b;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 12px;
+        }
+        button:hover {
+            background-color: #a03f07;
+        }
+        .resume-output {
+            margin: 20px auto;
+            padding: 20px;
+            display: none;
+        }
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            margin: 20px auto;
+        }
+        .loading-spinner img {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+        <h1>Linkedin AI Resume Generator</h1>
+        <form id="resumeForm" enctype="multipart/form-data">
+            <label for="file">Choose Linkedin Resume PDF:</label>
+            <input type="file" id="file" name="file" accept=".pdf" required>
+            
+            <label for="theme">Select Resume Theme:</label>
+            <select id="theme" name="theme" required>
+                <option value="theme1">Theme 1</option>
+                <option value="theme2">Theme 2</option>
+                <option value="theme3">Theme 3</option>
+            </select>
+    
+            <button type="submit">Upload</button>
+        </form>
+    
+        <div id="resumeOutput" class="resume-output">
+            <!-- The generated resume HTML will be inserted here -->
+        </div>
+    
+        <div id="loadingSpinner" class="loading-spinner">
+            <img src="/static/loading_spinner.gif" alt="Loading...">
+        </div>
+    </div>
+   
+
+    <script>
+        document.getElementById('resumeForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('resumeOutput').style.display = 'none';
+            
+            const formData = new FormData(this);
+            const response = await fetch('/upload_resume/', {
+                method: 'POST',
+                body: formData
+            });
+            
+            document.getElementById('loadingSpinner').style.display = 'none';
+            
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('resumeOutput').innerHTML = data.resume_html;
+                document.getElementById('resumeOutput').style.display = 'block';
+            } else {
+                const error = await response.json();
+                document.getElementById('resumeOutput').innerHTML = `<p>Error: ${error.detail}</p>`;
+                document.getElementById('resumeOutput').style.display = 'block';
+            }
+        });
+    </script>
+</html>
